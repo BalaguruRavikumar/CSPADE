@@ -1,0 +1,7 @@
+*.pyc
+*.pyo
+media/uploads/*
+uploads/*
+static/cmpd_svg/*
+cspade.sublime-workspace
+cspade.sublime-project

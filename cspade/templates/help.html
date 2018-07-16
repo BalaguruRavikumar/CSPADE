@@ -1,0 +1,570 @@
+
+{% extends "base.html" %}
+{% block head_css %}
+
+  <style>
+
+
+    .wrap-outer {
+        margin-top:-40px;;
+    }
+    .wrap-inner {
+        padding-top:40px;;
+    }
+    body { position: relative}
+
+    .nav .nav {
+    display: none;
+    }
+
+    .nav .active .nav {
+    display: block;
+    }
+
+    .nav .nav a {
+    font-weight: normal;
+    font-size: .85em;
+    }
+
+    .nav .nav span {
+    margin: 0 5px 0 2px;
+    }
+
+    .nav .nav .active a,
+    .nav .nav .active:hover a,
+    .nav .nav .active:focus a {
+    font-weight: bold;
+    padding-left: 30px;
+    border-left: 5px solid black;
+    }
+
+    .nav .nav .active span,
+    .nav .nav .active:hover span,
+    .nav .nav .active:focus span {
+    display: none;
+    }
+
+    #help .well {
+        font-family: Courier;
+        font-size: 1.2em;
+    }
+
+ 
+
+  .affix {
+      top: 20px;
+  }
+  div.col-sm-9 div {
+      height: 250px;
+      font-size: 28px;
+  }
+    .thumbCaption{
+
+    font-size: 12px;
+    }
+    .text-center{
+        
+        font-style: italic;
+    }
+
+  p {
+    font-size: 17px;
+    text-align: justify;
+  }
+
+
+  </style>
+  <link href="//cdn.rawgit.com/noelboss/featherlight/1.7.0/release/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+{% endblock %}
+{% block head_javascript %}
+     <script>
+       $(document).ready(function() {
+            $('body').scrollspy({target: "#myScrollspy", offset: 250})
+       });
+   // </script>
+{% endblock %}
+{% block content %}
+
+  <div class="row">
+  <div class="col-sm-3" id="myScrollspy">
+  <ul class="nav hidden-xs hidden-sm affix" data-spy="affix" data-offset-top="200">
+    <li><a href="#about">About</a></li>
+    <li><a href="#browser">Browser requirements</a></li>
+    <li><a href="#ui">User Information</a></li>
+    <li><a href="#exampledata">Example Data</a> </li>
+    <li><a href="#ud">Upload Data</a></li>
+    <li><a href="#dataprev">Data Preview</a></li>
+    <li><a href="#addcomp">Add Compounds</a></li>
+    <li><a href="#visualization">Visualization</a></li>
+    <li><a href="#maininterface">Main interface</a></li>
+    <li><a href="#sidebar">Sidebar options</a>
+        <ul class="nav">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#layout">Layout</a></li>
+                 <li><a href="#view">Style</a></li>
+                <li><a href="#branch">Branch</a></li>
+                <li><a href="#nodes">Node</a></li>
+                <li><a href="#attributes">Attributes</a></li>
+                <li><a href="#annotation">Annotation</a></li>
+                <li><a href="#export">Export</a></li>
+                
+        </ul>
+
+    </li>
+    <li><a href="#toolbar">Tool Bar options</a></li>
+    <li><a href="#dependencies">Dependencies</a></li>
+  </ul>
+    </div>
+    <div class="col-md-9">
+          <div class="wrap-outer">
+      <section id="about"><div class="wrap-inner">
+
+    <h1 style="margin-top:0">About</h1>
+    <p>
+  <b>C-SPADE</b> web-application serves as an interactive and innovative visualization tool for drug screening data. It reterives compounds structural information and clusters them based on their structural similarties, which is later visualized as a dendrogram of compounds augmented with their bioactivity values and other compound annotations. Additionally, it allows a real-time comparison of investigational compounds against a screening panel for drug development or repurposing applications. C-SPADE deals with various types of drug screening assays (biochemical, cell-based, cell-free). Tailored to be accessible to researchers with little to no chemoinformatics skills, it requires only the raw drug screening data as input and automatically calculates the structural information required for compound clustering, thereby significantly reducing the manual time required for such analysis.
+
+    </p>
+
+   
+    </p></div></section></div>
+    <div class="wrap-outer">
+      <section id="browser"><div class="wrap-inner">
+
+    <h1 style="margin-top:0">Browser requirements</h1>
+    <p>
+  C-SPADE web application creates compound based similarity dendrogram designed for drug screening data. C-SPADE has not been designed for high throughput studies hence though very large compound trees can be visualized it is time consuming and memory intensive. C-SPADE has been checked for compatibility with standard modern browsers (Mozilla Firefox, Google chrome and Safari). Certain features of C-SPADE requires browser cookies hence make sure that browser privacy settings allow cookies to be stored.
+    </p>
+
+   
+    </p></div></section></div>
+
+    <div class="wrap-outer">
+    <section id="ui">
+    <div class="wrap-inner">
+    <h1>User Information</h1>
+        
+
+        <div class="row">
+            <div class="col-xs-6 col-md-6">
+
+                <p>C-SPADE can be directly accessed without any user login, registration, or providing any email address. On login, each user is provided an anonymous session where the user can upload one or more datasets and C-SPADE processes them simultaneously. The data uploaded by each user is secure and private to the specific browser session, which expires at the specified session expiry time displayed at the top in a notification bar. User has the possibility to bookmark the web address, close the browser, and revisit the address to resume the analysis.
+                 </p>
+                 <p>
+                When using C-SPADE, if you encounter any problem please contact the <a href='mailto:balaguru.ravikumar@helsinki.fi,zaid.alam@helsinki.fi'>developer</a> 
+                 </p>       
+
+            </div>
+            <div class="col-xs-6 col-md-6">
+                <p class="thumbCaption text-center" >Click to enlarge</p>
+                <a href="#" class="thumbnail" data-featherlight="/static/img/help/ui.png">
+
+                    <img src="/static/img/help/ui.png" alt="C-SPADE  viewer user info">
+                </a>
+                <p class="thumbCaption"><b>Figure 1:</b> User information: (A) Home page. (B) My Projects  page. (C) Feedback page. (1) Get Started button to login C-SPADE. (2) A quick tour of C-SPADE. (3) My projects tab for data upload and management. (4) User guide: redirects to the help page. (5) Contact Us: To contact the developers and (6) Feedback would result in a pop-up page (C) where the user can report a bug or provide feedbacks.
+
+</p>
+            </div></div>
+
+    </div></section></div>
+        <div class="wrap-outer">
+    <section id="exampledata">
+    <div class="wrap-inner">
+    <h1>Example Data</h1>
+                <p>
+                     The example data is a preprocessed subset of cell-based assay published by <a href='http://www.nature.com/leu/journal/vaop/ncurrent/full/leu2016314a.html'> Malani, et al</a>. The dataset contains 75 compounds screened across three types of cell-lines, with a subset of compounds annotated by the inhibitor type (e.g. proteasome inhibitor, nucleoside analogue, anti-metabolite etc).The summary measurments used is this study was Drug Sensitivity Score (<a href='https://www.nature.com/articles/srep05193'>DSS</a>).
+                     <p>The various input data formts are provided as templates:</p>
+                     <ul>
+                        <li><p>DSS as the assay read-out.</p></li>
+                        <li><p>IC50 as the assay read-out.</p></li>
+                        <li><p>IC50 with SMILES: Compounds with SMILES information.</p></li>
+                        <li><p>Compounds only: With only th enique names of the compounds.</p></li>
+                     </ul>  
+
+                </p>
+                <p>The user can choose to directly load the example data to C-SPADE by clicking on the Upload example data button, or choose to <i>Download example data</i> to manually inspect the data format.</p>
+
+                            
+       
+
+    </div></section></div>
+        <div class="wrap-outer">
+    <section id="ud">
+    <div class="wrap-inner">
+    <h1>Upload Data</h1>
+        
+
+        <div class="row">
+            <div class="col-xs-6 col-md-6">
+
+                <p>To upload the input data, go to the My Projects page and select the Browse option, select the data that you want to visualize and click Upload.  The input data should be a tab delimited file (.txt).
+
+
+                 </p>
+
+     
+
+            </div>
+            <div class="col-xs-6 col-md-6">
+                  <p class="thumbCaption text-center" >Click to enlarge</p>
+                <a href="#" class="thumbnail" data-featherlight="/static/img/help/ud.png">
+                    <img src="/static/img/help/ud.png" alt="upload data-1">
+                </a>
+                <p class="thumbCaption"><b>Figure 2:</b> General information and Example datasets: (1) On login, the session expiry period is indicated in the notfication bar. (2) Projects table, list’s the files uploaded and their job status. (3) The Upload button to upload user specific input data. (4) Upload example data button (The templates for various input data formats). (5) Download example data button
+
+
+</p>
+            </div></div>
+                    <div class="row">
+            <div class="col-xs-6 col-md-6">
+
+               <p>
+                    The input file should include the following columns. <b>COMPOUND</b>(required): the unique names of the compounds used in the screen; <b>SMILES</b>(optional): the compounds whose SMILES information provided will be directly used by C-SPADE to calculate their structural features, otherwise, the compound names will be quired against the PubChem database to retrieve the SMILES;
+                     <b>
+
+                    one or more assays</b>(optional) (i.e. targets, cell-lines etc): with each assay in a separate column providing bioactivity values (IC50, EC50, Ki or Kd) or summary measurmenets (DSS or AUC);
+                    <b>ANNOTATION</b> (optional): additional annotation of the compounds (e.g. compound class) if available.
+
+
+                 </p>
+                    
+
+            </div>
+            <div class="col-xs-6 col-md-6">
+                  <p class="thumbCaption text-center" >Click to enlarge</p>
+                <a href="#" class="thumbnail" data-featherlight="/static/img/help/ud2.png">
+                    <img src="/static/img/help/ud2.png" alt="upload data-2">
+                </a>
+                <p class="thumbCaption"><b>Figure 3:</b> (A) Input file format. The first few rows of the Malani et al., dataset are shown. This file contains drug screening data obtained in a cell-based assay from three cell lines (SH_1:Parental, SH_1:320X, SH_1:1280X) with a panel of 75 drugs using IC50 assay measurements. A subset of the drugs are annotated with inhibitor type (glucocorticoids, anti-mitotic etc.).(B) The input data format with SMILES of the compounds if available.
+
+</p>
+            </div></div>
+                                 <div class="row">
+            <div class="col-xs-6 col-md-6">
+
+                <p>
+                  On submission, for compounds whose SMILES information are not provided, C-SPADE queries PubChem database using the compound names and retrieves structural information of compounds as SMILES. Depending on the number of compounds, this process might take from few seconds to several minutes. During the retrieval process, the <i>Data Preview icon</i> appears in red color and is not clickable. This pages automatically refreshes every 30 sec, at this stage the user can choose to revisit the page after few minutes keeping the browser open, or bookmark the web address to revisit and resume the analysis. Upon completion, the <i>Data Preview icon</i> in the upload page will turn green.
+      
+                 </p>
+                    
+
+            </div>
+            <div class="col-xs-6 col-md-6">
+                  <p class="thumbCaption text-center" >Click to enlarge</p>
+                <a href="#" class="thumbnail" data-featherlight="/static/img/help/ud3.png">
+                    <img src="/static/img/help/ud3.png" alt="upload data-3">
+                </a>
+                <p class="thumbCaption"><b>Figure 4:</b> Data Upload: (1) Notification to the user on successful upload of the file (any error in the input file will be notified here). (2) Title of various dataset uploaded with the file name as project titles. Mutilple dataset can be analysied simulateously, the active dataset will be highlighted in blue. (3) Enumeration of the number of compounds provided in the input file. (4) Data Preview tab: Status of reterival process. (5) Visual preview tab: Status of visulization process. (6) Data and Time of Upload (7) Project delete button (8) & (9) Data Preview icon and Viusal Preview icon will be red while processing and turns green once the process is completed. These icons also severs as button to redirect the user to the respective web pages.
+
+</p>
+            </div></div>   
+    </div></section></div>
+
+    <div class="wrap-outer"><section id="dataprev"> <div class="wrap-inner">
+    <h1>Data Preview</h1>
+            <div class="row">
+            <div class="col-xs-6 col-md-6">
+
+                 <p>
+                  On clicking the <i>Data Preview icon</i> in the upload page the user is redirected to the <i>Data Preview</i> page. Here the user’s input data are displayed in a tabular format augmented with two other columns, PubChem CID, the compound ID from PubChem database, SMILES the input or retrieved structural information of the compound. This page allows the users to manually edit, curate, filter and sort the data. The PubChem CID column contains the compound ID’s as hyperlinks to the PubChem database. Right-Clicking on the CID redirects the user to the PubChem Database with the compound information. Since C-SPADE relies on PubChem database for retrieving SMILES description, there can be cases where C-SPADE fails to return the SMILES. In such scenarios, the user is expected to provide SMILES of the compound for it to be included in the visualization. By default, all the columns with SMILES information will be selected, but the user can also select a subset of compounds for visualization (<i>a minimum of 10 compounds are necessary to generate the dendrogram</i>) through the select icon given in the far-left corner of the table.
+
+
+</p>
+
+                 <p>Prior to visualization, the user should specify the type of activity measure (DSS, AUC IC50, EC50, Ki or Kd) that was used in the screening process, the default activity measure is <b>DSS</b>. These parameters along with the column names of the bioactivity values will be used as legends in the visualization workspace. The order in which the assay information are provided in the input data will be the order by which they are represented.
+
+
+
+</p>
+            </div>
+            <div class="col-xs-6 col-md-6">
+                  <p class="thumbCaption text-center" >Click to enlarge</p>
+                <a href="#" class="thumbnail" data-featherlight="/static/img/help/dp.png">
+                    <img src="/static/img/help/dp.png" alt="Data Preview">
+                </a>
+                <p class="thumbCaption"><b>Figure 5:</b> Data Preview Page: (1) Select icon: Subset of compounds can be selected to visualize (A minimum of 10 compounds should be selected for viuslaization). To select all compounds in a single click, checkbox next to the header can be used. (2) The PubChem Compound ID’s, they are hyperlinks to the compound information, right-clicking redirects the user to the PubChem database. (3) SMILES of the compound as obtained from PubChem (4) Preview of the user input data (Compound, Bioactivities and Annotations) with SMILES  and PubChem CID information, a minimum of 25 rows of the input data is shown the user can select different number of rows to be displayed. (5) The appropriate Activity Measure that was used in the input data should be selected prior to visulation, these measures include (DSS, AUC, IC50, EC50, Ki or Kd) (6) Visualize button that redirects the user to the visual workspace.</p>
+            </div></div>
+
+
+
+    </div></section></div>
+          
+          <div class="wrap-outer"><section id="addcomp"> <div class="wrap-inner">
+    <h1>Add Compounds</h1>
+            <div class="row">
+            <div class="col-xs-6 col-md-6">
+
+                 <p>The user can choose to investigate the similarity of one or more investigational molecules to drugs in the screening panel through  <i>Add Compounds </i> option. Selecting this option creates a new row in the generated table in real time, here the user is expected to give the name of the compound, the SMILES information and select the compound. These newly added compounds will be clustered with the selected compounds in the table.</p>
+
+                
+
+            </div>
+            <div class="col-xs-6 col-md-6">
+                  <p class="thumbCaption text-center" >Click to enlarge</p>
+                <a href="#" class="thumbnail" data-featherlight="/static/img/help/addcompound.png">
+                    <img src="/static/img/help/addcompound.png" alt="Add Compounds">
+                </a>
+                <p class="thumbCaption"><b>Figure 6:</b> Add an investigational compound in real time to compare it with compounds used in the screening experiment. (1) Add Compound button to add new compounds (2) Generates a new row at the top of the table where the user should provide the compound name, structural information as SMILES and select the compound. (3) Data Preview page facilitates the user to edit, filtered and sort the input data. (4) Visualize button to visualize similarity dendrogram including the newly added compound.
+
+</p>
+            </div></div>
+  
+
+
+    </div></section></div> 
+    <div class="wrap-outer"><section id="visualization"> <div class="wrap-inner">
+    <h1>Visualization</h1>
+    <p>When the user clicks on <i>Visualize</i>, the user is redirected to the <i>Visualization</i> workspace. The visualization workspace is an interactive and dynamic platform in C-SPADE that allows the user to:</p>
+    <ul>
+        <li><p>View and analyze compound similarity cluster and bioactivity values.</p></li>
+        <li><p>Customize the appearance of the dendrogram.</p></li>
+        <li><p>Download and share the results.</p></li>
+    </ul>
+    <p>Once the clustering is calculated and the visual workspace is ready to be viewed, the <i>Visual Preview
+ icon</i> in the <i>My Projects</i> page will turn to green and is clickable.</p>
+
+
+    </div></section></div> 
+
+        <div class="wrap-outer"><section id="maininterface"> <div class="wrap-inner">
+    <h1>Main Interface</h1>
+    <p>The main visual interface displays the compound similarity dendrogram, by default the compound similarity is estimated using the <b>ECFP4</b> fingerprints, represented as <b>Tree</b> and the edges displayed as <b>Path</b>. The compounds that were selected in the Data Preview Page will be the nodes and the distance between two nodes is an estimate of their similarity. The compound names will be the labels of the node and the activity measure given in the input data are categorized into five potency classes using log-transformed IC50, EC50, Ki, Kd values (≤1nM, ≤10nM, ≤100nM, ≤1uM, ≤10uM); With the the summary measurements, such as AUC and DSS, the actual bioactivity values are used and represented as circular annotations in the dendrogram, the radius of which corresponds to the categorized bioactivity measure provided and is displayed in the <i>Bioactivity</i> legend and the color coding uniquely representing the various assays are shown in the <i>Activity</i> Classes legend. Annotation of the compounds if provided will be displayed with unique color and shown in the <i>Compound Annotation</i> legend.
+
+
+</p>
+
+
+
+    </div></section></div> 
+
+        <div class="wrap-outer"><section id="sidebar"> <div class="wrap-inner">
+    <h1>Side Bar options</h1>
+                <div class="row">
+            <div class="col-xs-6 col-md-6">
+
+     <p>The side bar options panel contain options that allows to the user to interactively modify various visual ascepts in the main visual interface. Each option in the sidebar can be hidden or shown by the toogle button next to it. This sections allows user to customize the layout, select different compound features, edit the colors of labels and annotations, change the label sizes and branch widths, zoom and rotate the plot, search and highlight compounds and allows the user to export the visualization as a <i>.png</i>  or <i>.pdf</i> file or as a newick tree file <i>(.nwk)</i> or <i>Share</i> the customizable visual workspace as a hyperlink.
+
+
+</p>
+
+                
+
+            </div>
+            <div class="col-xs-6 col-md-6">
+                  <p class="thumbCaption text-center" >Click to enlarge</p>
+                <a href="#" class="thumbnail" data-featherlight="/static/img/help/sidebar.png">
+                    <img src="/static/img/help/sidebar.png" alt="Side bar">
+                </a>
+                <p class="thumbCaption"><b>Figure 7:</b> Visual Workspace page. (1) Main Visual Interface (2) The Side Bar options. (3) Tool Bar options.</p>
+            </div></div>
+
+
+
+
+    </div></section></div> 
+
+
+        <div class="wrap-outer"><section id="features"> <div class="wrap-inner">
+    <h1>Features</h1>
+    <p><i>ECFP4</i> fingerpints are used to calulate the compound similarity, the feature options allows to user to select other fingerpint features such as (<i>ECFP6, MACCS , Daylight or Atom-Pair</i>) to generate the compound cluster dendrogram.
+ 
+
+
+</p>
+
+
+
+    </div></section></div> 
+        <div class="wrap-outer"><section id="layout"> <div class="wrap-inner">
+    <h1>Layout</h1>
+    
+                                <div class="row">
+            <div class="col-xs-6 col-md-6">
+
+<p>The layout options allows the user to visualize the similarity dendrogram as a standard hierarchical <i>Tree</i> cluster or as a <i>Radial</i> cluster.</p>
+
+                
+
+            </div>
+            <div class="col-xs-6 col-md-6">
+                  <p class="thumbCaption text-center" >Click to enlarge</p>
+                <a href="#" class="thumbnail" data-featherlight="/static/img/help/layout.png">
+                    <img src="/static/img/help/layout.png" alt="layout">
+                </a>
+                <p class="thumbCaption"><b>Figure 8:</b> Layouts, Styles and Bioactivity legends in C-SPADE. (A) & (B) Shows the types of layouts (Tree or Radial) and Styles (Path or Standard) avaibale in C-SPADE. (C) Shows the two representations of bioactivty legneds in C-SPADE, for summary measurements (DSS and AUC) the actual potencies are dispalcyed, in case of IC50, EC50, Ki or Kd  the activity measurements are catergorized and displayed.</p>
+            </div></div>
+
+
+    </div></section></div> 
+        <div class="wrap-outer"><section id="view"> <div class="wrap-inner">
+    <h1><style type="text/css"></style></h1>
+                    <div class="row">
+            <div class="col-xs-6 col-md-6">
+<h1>Style</h1>
+ <p>The style options controls the representation of the tree branches in the dendrogram, the user can choose to represent the tree edges as  <i>Standard</i> edges or as <i>Paths.</i></p>
+
+           
+
+            </div>
+            <div class="col-xs-6 col-md-6">
+                  <p class="thumbCaption text-center" >Click to enlarge</p>
+                <a href="#" class="thumbnail" data-featherlight="/static/img/help/view.png">
+                    <img src="/static/img/help/view.png" alt="Views">
+                </a>
+                <p class="thumbCaption"><b>Figure 9:</b> Features, Layouts and Views in C-SPADE. (1)Feature options (MACCS, ECFP4, ECFP6, Daylight) as drop down menus.(2) Layout options (Tree, Radial). (3) View options (Standard, Path).
+
+</p>
+            </div></div>
+    </div></section></div> 
+           <div class="wrap-outer"><section id="branch"> <div class="wrap-inner">
+    <h1>Branch</h1>
+    <p>The <i>Thickness</i> and <i>Color</i> of the branch in the dendrogram are contolled using this option.The default branch thickness is <b>1.5</b>.
+</p>
+    </div></section></div> 
+    <div class="wrap-outer"><section id="nodes"> <div class="wrap-inner">
+    <h1>Nodes</h1>
+    <p>The nodes in the tree are represented as circles with a default radius of <b>2</b>, the user can change the <i>Radius</i> of the node and there <i>Color</i> using this option. The node labels font size can also be dynamically adjusted using the <i>Label Size</i> option, the default font size is <b>7</b>.
+</p>
+    </div></section></div> 
+
+
+
+
+       <div class="wrap-outer"><section id="attributes"> <div class="wrap-inner">
+    <h1>Attributes</h1>
+                        <div class="row">
+            <div class="col-xs-6 col-md-6">
+
+    <p>Each <i>Activity Classes</i> (targets, cell-lines or other features) (targets, cell-lines or other features) provided in the input data will be assigned to randomly color and displayed as circle corresponding to each compound.The <i>Attributes</i> options is a sidebar menu allows the user to select and alter the <i>Color</i> code for specific classes, which will be automatically updated in the legends. The activity values are either categortized (<i>=1nM, =10nM, =100nM, =1uM, =10uM</i>) for IC50, EC50, Ki, Kd measurements or for DSS and AUC the actual bioactivity values  are augumneted with the activity measure and displayed in the <i>Bioacvity legends</i>. Each activity classes and their respective color codes are displayed in the <i>Activity Class</i> legend.
+
+
+</p>
+
+
+           
+
+            </div>
+            <div class="col-xs-6 col-md-6">
+                  <p class="thumbCaption text-center" >Click to enlarge</p>
+                <a href="#" class="thumbnail" data-featherlight="/static/img/help/attributes.png">
+                    <img src="/static/img/help/attributes.png" alt="Attributes">
+                </a>
+                <p class="thumbCaption"><b>Figure 10:</b> Branch, Nodes and Attributes in C-SPADE. (1) Branch options: Thickness and color. (2) Node Options: Radius, Color and Label font size. (3) Attributes options: Activity Class-The different classes of activity given in the input data, Color of the classes.
+
+
+</p>
+            </div></div>
+    </div></section></div> 
+
+       <div class="wrap-outer"><section id="annotation"> <div class="wrap-inner">
+    <h1>Annotation</h1>
+    <p>The compound annotation if provided for various compounds will be color coded. Similar to attributes option, the user can select individual compound classes and change the <i>Color</i> codes, which will be automatically updated in the legends. Selecting the <i>Highlight</i> check box will display the <i>Compound Annotation</i> legend. 
+ 
+ 
+</p>
+    </div></section></div> 
+
+   <div class="wrap-outer"><section id="export"> <div class="wrap-inner">
+    <h1>Export</h1>
+                <div class="row">
+            <div class="col-xs-6 col-md-6">
+   <p>Through the export option the user can download the visual worksapce as <i>.png</i> file or a <i>.pdf</i> file. In case of larger tree, the user can download the compound similarity dendrogram as a Newick tree file <i>(.nwk)</i>.The user can also choose to share the workspace through the <i>Share</i> option that generates a hyperlink of the visual workspace.
+
+
+
+</p>
+
+
+           
+
+            </div>
+            <div class="col-xs-6 col-md-6">
+                  <p class="thumbCaption text-center" >Click to enlarge</p>
+                <a href="#" class="thumbnail" data-featherlight="/static/img/help/export.png">
+                    <img src="/static/img/help/export.png" alt="Export">
+                </a>
+                <p class="thumbCaption"><b>Figure 11:</b> Annotation, Export and Legends in C-SPADE. (1) Annotation options: The different Compound annotation provided by the user in the input data is highlited with a distinct colour and can be switched on/off by the highlight checkbox (2). (3) Export options: The user can either export the image as a .png, .pdf or .nwk format using the export option or choose the share (4) the workspace through the Share option. (5) Bioactivity Legend: The Activity Measure provided by the user (if IC50, values will be catergorized) is plotted as circles with the highest affinity value having the biggest radius and the lowest affinity value with the smallest radius. (6) Activity Class Legend: The Attribute classes foreach cell-lines/samples are colour coded distinctly. (7) Compound Annotation Legend: The various compound annotations in the input data will be colour coded and shown.
+
+
+
+</p>
+            </div></div>
+ 
+    </div></section></div> 
+
+            <div class="wrap-outer">
+    <section id="toolbar">
+    <div class="wrap-inner">
+    <h1>Tool Bar options</h1>
+        
+                    <div class="row">
+            <div class="col-xs-6 col-md-6">
+                <p><i>Mouse Hover:</i> Hovering the mouse pointer over a the bioactivity bubbles or a compound name displays a tooltip that shows the input bioactivity value or structure of the compound respectively.</p>
+
+                <p><i>Search bar:</i> To search a Compound’s name in the dendrogram, the user can make use of the search bar, the compound,if present in the dendrogram will be highlighted in <i>yellow</i>. </p>
+
+                <p><i>Zoom + :</i> The zoom in button facilitates the user to zoom into the main interface this functionality  is also augumented with the mouse scroll wheel of the mouse.</p>
+                <p><i>Zoom – :</i> The zoom out button facilitates the user to zoom out the main interface,this functionality is also augumented with the scroll wheel of the mouse.</p>
+                <p><i>Fit to screen :</i> By clicking fit to screen button, the generated dendrogram will be optimaly fit to any  display screen.</p>
+                <p><i>Pan:</i> By holding the <i>left-click</i> button or the scroll-wheel in the mouse the user can <i>Pan</i> the generated dendrogram conveniently.</p>
+                <p><i>Rotation:</i> An option only available for Radial cluster visualization, allows the user to rotate the clustered tree to any desireable angle.</p>
+                <p><i>Save Workspace:</i> The user can save the changes made in the visual interface for each session using this options, hence the changes are restored when the session is revisited.</p>
+
+         
+
+            </div>
+            <div class="col-xs-6 col-md-6">
+                  <p class="thumbCaption text-center" >Click to enlarge</p>
+                <a href="#" class="thumbnail" data-featherlight="/static/img/help/toolbar.png">
+                    <img src="/static/img/help/toolbar.png" alt="Tool Bar">
+                </a>
+                <p class="thumbCaption"><b>Figure 12:</b> Tool Bar options. (1) Compound search bar. (</i>2) Zoom In. (3) Zoom Out. (4) Fit to screen. (5) Rotating the radial dendrogram. (6) The Save Workspace option. (7) Hovering over the compound names or bioactivity annotations displayes the compound structure or the input bioactivity value.
+
+</p>
+            </div>
+        </div>
+    
+
+            
+       
+
+    </div></section></div>
+
+      <div class="wrap-outer"><section id="dependencies"> <div class="wrap-inner">
+    <h1>Dependencies</h1>
+    
+    <ul>
+    <li><p>The backend computation is implemented using Python (<i>version 2.7.12</i>).</p></li>
+<li><p>The compound fingerpirnts are calculated using the RDKit module in python (<i>version 2016.09.1</i>).</p></li>
+<li><p>The Scipy module (<i>version 0.13.2</i>) is used to calculate the hierarchical clusing using the compound similarity estimate.</p></li>
+<li><p>The compound structural images are generated using the SMILES information through Open Babel (<i>version 2.3.1</i>).</p></li>
+<li><p>The interactive visualization was impletmented using D3 (<a href="http://d3js.org/">http://d3js.org/</a>) Javscript library.</p></li>
+
+    </ul>
+
+
+
+    </div></section></div>
+
+    
+
+ <!--    <p style="margin-bottom: 1500px"></p> -->
+    </div>
+  </div>
+  <script src="//cdn.rawgit.com/noelboss/featherlight/1.7.0/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+   <script type="text/javascript">
+window._urq = window._urq || [];
+_urq.push(['initSite', 'c489133a-3dc9-4931-86a9-8904adb1720d']);
+(function() {
+var ur = document.createElement('script'); ur.type = 'text/javascript'; ur.async = true;
+ur.src = ('https:' == document.location.protocol ? 'https://cdn.userreport.com/userreport.js' : 'http://cdn.userreport.com/userreport.js');
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ur, s);
+})();
+</script>
+<script type="text/javascript">
+var refresh = setTimeout("location.reload(true);", 30000);
+</script>
+
+
+{% endblock content %}

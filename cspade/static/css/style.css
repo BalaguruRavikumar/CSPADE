@@ -1,0 +1,189 @@
+
+/*
+body {
+    
+}*/
+
+ body, html {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+
+
+.node {
+  font: 4px sans-serif;
+}
+.navbar-default {
+    background-color: #fff;
+
+}
+.text-center {
+  padding-top: 20px;
+}
+.col-xs-12 {
+  background-color: #fff;
+}
+#sidebar {
+  height: 100%;
+  padding-right: 0;
+  padding-top: 20px;
+}
+#sidebar .nav {
+  width: 95%;
+}
+.radio div{
+    border: 1px solid #ccc;border-radius:4px;
+    width:70%;
+}
+.radio .form-control {
+    width: 70%;
+    height: 15px;
+    padding: 6px;
+}
+path.arc {
+  cursor: move;
+  fill: #fff;
+}
+#sidebar li {
+  border:0 #f2f2f2 solid;
+  border-bottom-width:1px;
+}
+.container {
+    width: 100%;
+}
+a.list-group-item{
+  font-weight: bold;
+}
+.Aligner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/*.list-group.panel > .list-group-item {
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px
+}*/
+
+
+.list-group-item-success{
+  color: #F8F8F8;
+}
+
+#svg {
+  width:100%;
+  height:100%;
+  background-color: #fff;
+  border: 1px dotted silver;
+}
+.list-group-submenu {
+  /*margin-left:20px;*/
+}
+
+
+.legend {
+              padding: 5px;
+              font: 10px sans-serif;
+              background: yellow;
+              box-shadow: 2px 2px 1px #888;
+            }
+
+
+/*container for gene search box*/
+#cmpd_search_container{
+  margin-top: 10px;
+  /*needed for some reason*/
+  margin-left: 0px;
+  display: none:;
+}
+
+/*gene search box */
+#cmpd_search_box{
+/*  width:150px;*/
+  /*float:left;*/
+  /*display: none;*/
+}
+
+/*gene search button*/
+#cmpd_search_button{
+  /*width:50px;*/
+  /*float:left;*/
+  /*margin-top:-2px;*/
+  /*display: none;*/
+}
+
+/* enable absolute positioning */
+.inner-addon {
+  position: relative;
+}
+
+/* style glyph */
+.inner-addon .glyphicon {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+}
+
+/* align glyph */
+.left-addon .glyphicon  { left:  0px;}
+.right-addon .glyphicon { right: 0px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
+
+
+
+
+/* collapsed sidebar styles */
+@media screen and (max-width: 767px) {
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all 0.25s ease-out;
+    -moz-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+  }
+  .row-offcanvas-right
+  .sidebar-offcanvas {
+    right: -41.6%;
+  }
+
+  .row-offcanvas-left
+  .sidebar-offcanvas {
+    left: -41.6%;
+  }
+  .row-offcanvas-right.active {
+    right: 41.6%;
+  }
+  .row-offcanvas-left.active {
+    left: 41.6%;
+  }
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 41.6%;
+  }
+  #sidebar {
+    padding-top:0;
+  }
+}
+
+/*.form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+     border:none;
+    border-radius: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-transition: none;
+    -o-transition: none;
+    transition: none;
+}*/
+

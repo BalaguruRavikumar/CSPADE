@@ -1,0 +1,653 @@
+
+
+{% extends "base.html" %}
+ {% load staticfiles %}
+
+{% block head_css %}
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+ <link href="//cdn.rawgit.com/noelboss/featherlight/1.7.0/release/featherlight.min.css" type="text/css" rel="stylesheet" />
+ <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %} 
+{% block head_javascript %}
+
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>          
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="//cdn.rawgit.com/noelboss/featherlight/1.7.0/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/js/saveSvgAsPng.js"></script>
+<script src="/static/js/zlib.js"></script>
+<script src="/static/js/png.js"></script>
+<script src="/static/js/FileSaver.min.js"></script>
+
+<script src="/static/js/jspdf.js"></script>
+<script src="/static/js/addimage.js"></script>
+<script src="/static/js/png_support.js"></script>
+
+<script src="/static/js/cspade_dendo.js"></script>
+
+{% endblock %}
+{% block content %}
+
+
+      <form method="POST" action="{% url 'project_edit' project.id %}">
+      {% csrf_token %}
+      <div class="row row-offcanvas row-offcanvas-left">
+        
+        <!-- sidebar -->
+        <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 sidebar-offcanvas" id="sidebar" role="navigation">
+
+
+      <div id="MainMenu" style='font: normal normal normal 14px/1 FontAwesome;'>
+       
+
+        <div class="list-group panel">
+          <!-- Feature -->
+          <a href="#feature" class="list-group-item title"  data-toggle="collapse" data-parent="#feature"><i class="fa fa-caret-right"></i> Feature</a>
+          <div class="collapse" id="feature">
+            <div class="list-group-item">
+             <select name = 'treetype' id = "treetype" name="treetype" class="form-control">
+              <option {% if project.feature == 'ecfp4' %} selected {% endif %} value="ecfp4">ECFP4</option>
+              <option {% if project.feature == 'ecfp6' %} selected {% endif %} value="ecfp6">ECFP6</option>
+              <option {% if project.feature == 'maccs' %} selected {% endif %} value="maccs">MACCS</option>
+              <option {% if project.feature == 'day' %} selected {% endif %} value="day">Daylight</option>
+              <option {% if project.feature == 'atompair' %} selected {% endif %} value="atompair">Atompair</option>
+            </select>                 
+
+            </div>
+
+          </div>
+
+
+          <!-- Layout -->
+    <!--     <a href="#layout" class="list-group-item list-group-item" data-toggle="collapse" data-parent="#layout"><i class="fa fa-caret-right"></i> Layout </a>
+          <div class="collapse" id="layout"> -->
+            <a href="#type" class="list-group-item" data-toggle="collapse" data-parent="#layout"><i class="fa fa-caret-right"></i> Layout</a>
+            <div class="collapse list-group-submenu" id="type">
+              <div href="" class="list-group-item">
+            <div class="form-group radio">
+               <div class="input-group">
+              <div class="input-group-addon" style="border: 0;">Tree</div>
+             <input class="form-control" id = "Tree" type="radio" name="mode" value="Tree" checked>
+              </div>
+              </div>
+                 <div class="form-group radio">
+               <div class="input-group">
+              <div class="input-group-addon" style="border: 0;">Radial</div>
+             <input class="form-control" id = "Radial"  type="radio" name="mode" value="Radial" >
+              </div>
+              </div>
+        
+            
+
+            </div>
+
+            </div>
+            <a href="#view" class="list-group-item" data-toggle="collapse" data-parent="#layout"><i class="fa fa-caret-right"></i> Style</a>
+            <div class="collapse list-group-submenu" id="view">
+            <div href="" class="list-group-item">
+
+              <div class="form-group radio">
+               <div class="input-group">
+              <div class="input-group-addon" style="border: 0;">Standard</div>
+             <input class="form-control" id = "Standard" type="radio" name="view" value="Standard">
+              </div>
+              </div>
+              <div class="form-group radio">
+               <div class="input-group">
+                <div class="input-group-addon" style="border: 0;">Path</div>
+                <input class="form-control" id = "Path" type="radio" name="view" value="Path" checked>
+              </div>
+              </div>
+
+        
+            </div>
+            
+            </div>
+         <!--  </div>   -->
+
+
+
+
+            <a href="#branch" class="list-group-item" data-toggle="collapse" data-parent="#branch"><i class="fa fa-caret-right"></i> Branch</a>
+            <div class="collapse list-group-submenu" id="branch">
+              <div href="" class="form-group list-group-item">
+              <div class="form-group">  
+              <div class="input-group">
+              <div class="input-group-addon">Thickness</div>
+              <input class="form-control" id ="bthickness" type="number" name="bthickness"  min="1" max="10" step="0.5" value="1">
+              </div>
+              </div> 
+              <div class="form-group">
+              <div class="input-group">
+              <div class="input-group-addon">Color</div>
+              <input  name = 'branchcolorpicker' class="form-control" id="branchcolorpicker" class='' onchange="clickColor(0, -1, -1, 5)" value="#8da0cb"  type="color">
+              </div>
+              </div> 
+            </div>
+            </div>
+
+
+            <a href="#node" class="list-group-item" data-toggle="collapse" data-parent="#node"><i class="fa fa-caret-right"></i> Node</a>
+            <div class="collapse list-group-submenu" id="node">
+            <div  class="form-group list-group-item">
+            <div class="form-group">  
+              <div class="input-group">
+              <div class="input-group-addon">Radius</div>
+              <input class="form-control" id ="nthickness" type="number" name="nthickness"  min="1" max="10" step="0.5" value="1">
+              </div>
+              </div> 
+              <div class="form-group">
+              <div class="input-group">
+              <div class="input-group-addon">Color</div>
+              <input  name = 'nodecolorpicker' class="form-control" id="nodecolorpicker" class='' onchange="clickColor(0, -1, -1, 5)" value="#8da0cb"  type="color">
+              </div>
+              </div> 
+                <div class="form-group">  
+              <div class="input-group">
+              <div class="input-group-addon">Label Size</div>
+              <input class="form-control" id ="nlabels" type="number" name="nlabels"  min="1" max="10" step="0.5" value="8">
+              </div>
+              </div> 
+            </div>  
+
+            </div> 
+                    <a href="#targets" class="list-group-item" data-toggle="collapse" data-parent="#annotations"><i class="fa fa-caret-right"></i> Attributes</a>
+            <div class="collapse list-group-submenu" id="targets">
+              <div href="" class="list-group-item">
+              <div class="form-group">
+              <div class="input-group">
+              <div class="input-group-addon">Classes</div>
+              <select id = "target" name="target" class="form-control">
+              </select> 
+              </div>
+              </div>
+              <div class="form-group">
+              <div class="input-group">
+              <div class="input-group-addon">Color</div>
+              <input class="form-control" id="targetcolorpicker" class='' onchange="clickColor(0, -1, -1, 5)" value="#8da0cb"  type="color">
+              </div>
+              </div>         
+            </div>
+            </div>     
+        <!-- annotations -->
+        <a href="#annotations" class="list-group-item list-group-item" data-toggle="collapse" data-parent="#annotations"><i class="fa fa-caret-right"></i> Annotations </a>
+          <div class="collapse" id="annotations">
+ 
+            <div  class="list-group-item"> 
+
+              <div class="form-group">
+              <div class="input-group">
+              <select id = "annotation_select" name="annotation_select" class="form-control">
+               
+              </select> 
+              </div>
+              </div> 
+              <div class="form-group">
+              <div class="input-group">
+              <div class="input-group-addon">Color</div>
+              <input class="form-control" id="annotationcolorpicker" class='' onchange="clickColor(0, -1, -1, 5)" value="#8da0cb"  type="color">
+              </div>
+              </div> 
+
+              <div class="form-group radio">
+              <div class="input-group">
+              <div class="input-group-addon" style="border: 0;">Hightlight</div>
+               <input id ="highlight" name = 'highlight' class="form-control"  type="checkbox" name="cmpd_high"  onchange="highoff(this)" checked>
+              </div>
+              </div>
+            </div>
+          </div>  
+          <a id ='exportResult' href="#export" class="list-group-item list-group-item" data-toggle="collapse" data-parent="#export">
+            <i class="fa fa-caret-right"></i> Export</a>
+          <div class="collapse" id="export">
+            <div href="" class="list-group-item">
+          <select id = "exportSelect" name="exportSelect" class="form-control">
+              <option value="png">PNG (Bitmap)</option>
+              <option value="pdf">PDF (Portable Document Format)</option>
+              <option value="newick">Newick Tree</option>
+            </select>
+            <br> 
+              <button id="saveimg" type="submit" class="btn btn-primary">
+               Export
+              </button>
+   
+            </div>
+          </div>
+          <a id ='share' href="#share" class="list-group-item list-group-item" data-toggle="modal" data-target="#myModal">
+            <i  class="glyphicon glyphicon-share"></i> Share</a>
+                         <!-- Modal -->
+              <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                  <!-- Modal content-->
+                  <div class="modal-content">
+     <!--                <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                           <div class="alert alert-info">
+                         <h4 class="modal-title">Share Link</h4>
+                      </div>
+                     
+                    </div> -->
+                    <div class="modal-body">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <div class="alert alert-info">
+                         <h4 class="modal-title">Share Link</h4>
+                      </div>
+                       <div class="form-group">  
+                        <div class="input-group">
+                        <div   class="input-group-addon"> <i  class="glyphicon glyphicon-share"></i></div>
+                        <input id='shareLink' class="form-control "  id ="share" type="text" name="share"  value="{{request.build_absolute_uri }}">
+                        </div>
+                      </div> 
+                    </div>
+           
+                  </div>
+
+                </div>
+              </div>
+
+        </div>
+                    <!-- Trigger the modal with a button -->
+              <!-- <button type="button" class="btn btn-primary" ><i  class="glyphicon glyphicon-share"></i> Share</button> -->
+
+   
+      </div>
+        </div>
+        <!-- main area -->
+        <div  class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+            <div id='controls' class='form-inline'>
+               <span id='toolbar'>
+              <div class="form-group">
+
+                <div class="inner-addon right-addon">
+                <i class="glyphicon glyphicon-search"></i>
+                    <input id='cmpd_search_box' class='form-control' type="text"  placeholder="Search Compound Name" aria-describedby="sizing-addon2">
+                </div>
+                        
+
+                </div>
+                  
+                  <div class="form-group">
+                  <button   type= 'button' title = 'zoom in' class='zoom' id="zoom_in"><i class="fa fa-search-plus fa-2x " aria-hidden="true"></i></button>
+                  <button  type= 'button' title = 'zoom out' class='zoom' id="zoom_out"><i class="fa fa-search-minus fa-2x" aria-hidden="true"></i></button>
+                   <button  type= 'button' title = 'fit to screen' class='fit' id="fit"><i class="fa fa-expand fa-2x" aria-hidden="true"></i></button>
+                  </div>
+
+                  <div id ='rotate-control' class="form-group" style='display:none'>
+                    <label for="ntheta">Rotate</label>
+                  <input class='form-control' type="range" min="0" max="360" id="ntheta" value=0>
+                  </div>
+                   <button id='save_workspace' type="submit" class="btn btn-default"><span class="glyphicon glyphicon glyphicon-save"></span> Save Workspace</button>
+                  </span>
+<!--             <div id ='workspace' class="form-group pull-right">  
+              <div class="input-group">
+             <button id='save_workspace' type="submit" class="btn btn-default"><span class="glyphicon glyphicon glyphicon-save"></span> Save Workspace</button>
+              
+              </div>
+            </div>   -->
+            </div>
+            <div  id='svg'>
+            </div>
+         <div  id='pngcon'></div>
+    </div><!--/.row-->
+  </form>
+
+ <script type="text/javascript">
+
+//Input Data:
+//Tree data:
+if (get('example')){
+  params = {'id': '{{project.id}}','example':true}
+}else{
+  params = {'id': '{{project.id}}'}
+}
+var treedata = (function () {
+    var treedata = null;
+
+    $.ajax({
+        'async': false,
+        'global': false,
+
+        'url': "/projects/loadtree/",
+        'data' : params,
+        'dataType': "json",
+        success: function (data) {
+      
+          treedata = data;
+        }
+
+    });
+    return treedata;
+})();
+
+
+
+//Input Variables:
+var nsize = '{{project.node_radius}}' != 'None' ? {{project.node_radius}} : 2;
+var ncolor = '{{project.node_color}}' != 'None' ? '{{project.node_color}}' : '#000';
+var bthick = '{{project.branch_thickness}}' != 'None' ? {{project.branch_thickness}} : 1.5;
+var bcolor = '{{project.branch_color}}' != 'None' ? '{{project.branch_color}}' : '#8da0cb';
+var tree = '{{project.feature}}' != 'None' ? treedata['{{project.feature}}'][0]: treedata['ecfp4'][0]; 
+var nwk_tree = '{{project.feature}}' != 'None' ? treedata['{{project.feature}}'][1]: treedata['ecfp4'][1]
+var labelsize = '{{project.label_size}}' != 'None' ? {{project.label_size}} : 6.5; 
+var nrot = 0;
+var measure =  treedata['in_par'];
+var img_file = treedata['img'];
+var dendtype = '{{project.layout}}' != 'None' ? '{{project.layout}}' : 'Tree';
+var branchtype = '{{project.style}}' != 'None' ? '{{project.style}}' : 'Path';
+var act = treedata['order'];
+// setting Input default varables 
+//Highlight Annotation:
+var anno = treedata['Annotation'];
+var anno_key =  $.map(anno, function(val, key) { return key; });
+var anno_value = $.map(anno, function(val, key) { return val; });
+var u_value = anno_value.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+var annosel = document.getElementById('annotation_select');
+var ucol = [];
+
+var width = 1200
+  height = 800
+var radius = width/2;
+var duration = 2000;
+var delay = 2000;
+
+for (j = 0; j < u_value.length; j++){
+  ucol[j] = randomColor();
+};
+
+$("#"+dendtype).prop("checked", true)
+$("#"+branchtype).prop("checked", true)
+$('#branchcolorpicker').val(bcolor)
+$('#nodecolorpicker').val(ncolor)
+$('#bthickness').val(bthick)
+$('#nthickness').val(nsize)
+$('#nlabels').val(labelsize)
+//Search bar:
+var cname = treedata['cname'];
+var search_cmpd;
+var asize = [5,4,3,2,1];
+var atext = ["≤ 10uM", "≤ 1uM", "≤ 100nM", "≤ 10nM", "≤ 1nM"].reverse();
+var a_hash = {};
+
+// target select
+var sel = document.getElementById('target');
+//Attribute Legends:
+var leg_txt = act;
+var leg_col = act_col;
+
+var leg_hash = {};
+
+//Compound Annotation:
+var c_hash = {};
+
+var cs =  25*leg_txt.length+250+20;
+
+//Activity Legends:
+
+for (i = 0; i < act.length; i++) { 
+  var opt = document.createElement('option');
+  opt.innerHTML = act[i];
+  opt.value = act[i].replace(/[^a-zA-Z0-9]+/g, "-");
+  sel.appendChild(opt);
+}
+
+//Annotation select
+
+for (i = 0; i < u_value.length; i++) { 
+  var opt2 = document.createElement('option');
+  opt2.innerHTML = u_value[i];
+  opt2.value = u_value[i].replace(/[^a-zA-Z0-9]+/g, "-");
+  annosel.appendChild(opt2);
+}
+
+
+for(i=0; i < asize.length; i++){
+  a_hash[i] = [asize[i], atext[i]];
+};
+
+//Legend position:
+lx = ((act.length+1)*30)+80+500;
+for(i=0; i < ucol.length; i++){
+  c_hash[i] = [u_value[i], ucol[i]];
+};
+
+
+for(i=0; i<leg_txt.length; i++){
+  leg_hash[i] = [leg_txt[i], leg_col[i]];
+};
+
+
+// autocomplete for compound search
+$( "#cmpd_search_box" ).autocomplete({
+  source: cname
+});
+
+$("#cmpd_search_box").keyup(function (e) {
+  remove_search()
+    if (e.keyCode == 13) {
+      a = search_cmpd = $('#cmpd_search_box').val();
+       find_cmpd_in_clust();
+    }
+});
+
+
+// d3 code for visualization
+
+var tooltip = d3.select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("z-index", "100")
+            .style("width","185px")                  
+            .style("height","200px")
+            .style("font-weight", "bold")
+            .style("padding","2px")             
+            .style("font","12px sans-serif")
+            .style("border","5px")      
+            .style("border-radius","8px")
+            .style("border-color","#ececec")
+            .style("background", "#ececec")
+            .style("visibility", "hidden");
+
+  
+d3.selectAll("input").on("change", function(){
+  
+  change_mode()
+
+});
+
+d3.selectAll("#treetype").on("change", function() {
+  
+   tree = treedata[this.value][0];
+   nwk_tree = treedata[this.value][1];
+  var dendtype = d3.select('input[name=mode]:checked').attr("value");
+  
+  if (dendtype == "Tree"){
+    generate_tree();
+    att_legend();
+    act_legend();
+    cmpd_legend();
+  }
+  else if (dendtype == "Radial"){
+    generate_clust();
+  }
+
+  node_label();
+  $('input:checkbox').prop('checked',true);
+  
+});
+
+d3.select("#bthickness").on("input", function() {
+
+  svg.selectAll(".link")
+    .attr("stroke-width", +this.value);
+     bthick = +this.value;
+});
+
+d3.select("#branchcolorpicker").on("input", function() {
+
+svg.selectAll(".link")
+
+  .style("stroke", this.value);
+});
+
+d3.select("#nlabels").on("input", function() {
+  svg.selectAll(".cmpdlabel")
+    .attr("font-size", this.value+"px");
+
+});
+
+d3.select("#nthickness").on("input", function() {
+  
+  svg.selectAll(".leaf")
+  .attr("r", +this.value);
+
+  nsize = +this.value;
+});
+
+d3.select("#nodecolorpicker").on("input", function() {
+
+svg.selectAll(".leaf")
+.attr("fill", this.value);
+});
+
+d3.select("#targetcolorpicker").on("input", function() {
+  svg.selectAll("."+$("#targets option:selected").val())
+    .attr("fill", this.value);
+});
+
+d3.select("#annotationcolorpicker").on("input", function() {
+  svg.selectAll("."+$("#annotations option:selected").val())
+    .attr("fill", this.value);
+});
+
+d3.selectAll('.zoom').on('click', zoomClick);
+d3.selectAll('#fit').on('click', center);
+
+d3.select("#ntheta").on("change", function() {
+    
+  var dendty = d3.select('input[name=mode]:checked').attr("value");
+  
+  if (dendty == "Radial"){
+    nrot = +this.value;
+      
+    svg
+      .transition()
+      .duration(duration)
+      .attr("transform", "translate(" + width/2 + "," + height/2 +") rotate("+nrot+")" );
+    
+    leg_trans_rot(nrot);
+  }
+});
+
+//Dimension of plot:
+var margin = {top: 20, right: 10, bottom: 20, left: 10};
+
+
+
+var rcluster = d3.layout.cluster()
+                  .size([360, radius-450]);
+   
+var tcluster = d3.layout.cluster()
+        .size([height-100, width-700]);
+
+//Path function:
+var rdiagonal = d3.svg.diagonal.radial()
+                  .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
+
+var tdiagonal = d3.svg.diagonal()
+         .projection(function(d) { return [d.y, d.x]; });
+
+var zoom = d3.behavior.zoom()
+    .translate([40, 0])
+    .scaleExtent([0.4, 8])
+    .on("zoom", zoomed);
+
+var svg = d3.select("#svg").append("svg")
+          .attr("width", '100%')
+          .attr("height", '100%')
+          .attr('viewBox','0 0 1200 700')
+          .attr('preserveAspectRatio','xMidYMid meet')
+          .call(zoom)
+          .append("g")
+            .attr("transform", "translate(40,0)");
+
+//The connection path/links in the data 
+var nodes = tcluster.nodes(tree) 
+     
+var link = svg.selectAll(".link")
+            .data(rcluster.links(nodes))
+            .enter().append("path")
+                    .attr("class", "link")
+                    .attr("d", tdiagonal)
+                    .attr("stroke-width", bthick)
+                    .attr("fill","none")
+                    .attr("stroke",bcolor);
+
+//Nodes in data
+var node = svg.selectAll(".node")
+  .data(nodes)
+  .enter().append("g")
+    .attr("class", "node")
+    .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+     //leaf nodes:           
+var leaves = svg.selectAll(".node")
+        .filter(function(d){return d.children == null; })
+        .append("circle")
+            .attr("class","leaf")
+            .attr("fill",ncolor)
+            .attr("r", nsize);
+
+
+//legends:
+att_legend();
+act_legend();
+cmpd_legend();
+leg_trans_tree();
+//Label nodes:
+node_label();    
+
+//Activity Circle:  
+node_actvity();
+change_mode()
+
+
+$('#saveimg').click(function(e) {
+    e.preventDefault()
+  
+        svgAsPngUri(d3.select('svg').node(), {scale:3}, function(uri) {
+                    //  // save png
+            if($('#exportSelect').val() == 'pdf'){
+            var pdf = new jsPDF('landscape');
+            var width = pdf.internal.pageSize.width;    
+            var height = pdf.internal.pageSize.height;
+             pdf.addImage(uri, 'PNG', 0, 0, width, height);
+             pdf.save('{{project.filename}}.pdf');
+            }else if($('#exportSelect').val() == 'png'){
+                downloadURI(uri,'{{project.filename}}.png')
+            }else{
+              uri = 'data:text/plain;charset=utf-8,' + nwk_tree;
+              downloadURI(uri,'{{project.filename}}.nwk')
+            }
+ 
+        });
+});
+
+
+
+$('#MainMenu .list-group-item').click(function (e){
+   $(e.target).children('i').toggleClass('fa-caret-down fa-caret-right');
+});
+
+$('.ui-helper-hidden-accessible').hide()
+
+
+</script>
+
+{% endblock content %}
+
+
+
+
+
+

@@ -1,0 +1,250 @@
+
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% block head_css %}
+
+<style type="text/css">
+.text-grey {
+  color: grey;
+}
+.table td{
+   text-align: center;   
+}
+.table th{
+   text-align: center;   
+}
+</style>
+{% endblock %} 
+
+
+
+
+{% block head_javascript %}
+<script type="text/javascript">
+
+$(document).ready(function() {
+  $('#am').on('change', function() {
+    if (this.value == 'DSS'){
+      $('#downloadExampleData').attr('href','/static/example/example_data_DSS.txt')
+      $('#uploadexample').attr('href','/projects/load_example/?am=DSS')
+    }else{
+      $('#downloadExampleData').attr('href','/static/example/example_data_IC50.txt')
+      $('#uploadexample').attr('href','/projects/load_example/?am=IC50')
+    }
+  })
+});
+</script>
+<script type="text/javascript">
+window._urq = window._urq || [];
+_urq.push(['initSite', 'c489133a-3dc9-4931-86a9-8904adb1720d']);
+(function() {
+var ur = document.createElement('script'); ur.type = 'text/javascript'; ur.async = true;
+ur.src = ('https:' == document.location.protocol ? 'https://cdn.userreport.com/userreport.js' : 'http://cdn.userreport.com/userreport.js');
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ur, s);
+})();
+</script>
+<script type="text/javascript">
+var refresh = setTimeout("location.reload(true);", 30000);
+</script>
+{% endblock %}
+{% block content %}
+
+
+<!-- Data Preview -->
+<div id="datapreview_info" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Data Preview</h4>
+      </div>
+      <div class="modal-body">
+        <p>After file upload, it may take  1-5 mins to process your data,depending on your file size</p>
+        <p><span   style='color:red' class="glyphicon glyphicon-edit text-grey"></span>: means file is processing</p>
+       <p><span  style='color:green' class="glyphicon glyphicon-edit text-grey"></span>: means file is ready</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- visualize -->
+<div id="visualize_info" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Visual Preview</h4>
+      </div>
+      <div class="modal-body">
+        <p>You will be able to visualize after data has been processed and you have previewed your data</p>
+        <p><span   style='color:red' class="glyphicon glyphicon-eye-close text-grey"></span>: not avaialble untill you have previewed the data.</p>
+       <p><span  style='color:green' class="glyphicon glyphicon-eye-open text-grey"></span>: Data visualization is avaialble.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="alert alert-info">
+  <strong>Notification!</strong> Your session expires on {{request.session.get_expiry_date}}
+</div>
+
+<div class="panel panel-default">
+  <div  class="panel-heading"><b id='projects-list'>Projects</b> </div>
+  <div class="panel-body">
+<table id='project_data'  class="project_data table">
+      <thead>
+        <tr>
+        <th style='text-align:left'>Title</th>
+        <th>No: of Compounds</th>
+        <th><a href="" data-toggle="modal" data-target="#datapreview_info" ><span class="glyphicon glyphicon-info-sign"></span> </a>Data Preview</th>
+        <th><a href="" data-toggle="modal" data-target="#visualize_info" ><span class="glyphicon glyphicon-info-sign"></span> </a></span>Visual Preview</th>
+        <th>Updated</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody class="ui-sortable">
+   
+
+
+    {% for Project in object_list %}
+    <tr>
+     <td style='text-align:left'>
+       {% if Project.d3_data %}
+      <a  href="{% url 'project_visualize' Project.id %}">{{Project.filename}}</a>
+       {% else %}
+       {{Project.filename}}
+       {% endif %}
+    </td>
+    <td>{{Project.compounds}}</td>
+     <td> 
+
+       {% if Project.smiles_data or Project.example%}
+      <a  id= 'preview_available' data-toggle="tooltip" title = 'available' href="{% url 'project_preview' Project.id %}"><span style='color:green' class="glyphicon glyphicon-edit"></span></a>
+       {% else %}
+       <p><span title = 'processing' data-toggle="tooltip" style='color:red' class="glyphicon glyphicon-edit text-grey">processing..</span></p>
+
+      {% endif %}
+
+
+    </td>
+     <td> 
+
+       {% if Project.d3_data %}
+       <a  data-toggle="tooltip" title = 'avaialble' href="{% url 'project_visualize' Project.id %}"> <span style='color:green' class="glyphicon glyphicon-eye-open"></a>
+
+
+       {% else %}
+       <span title = 'data preview required' data-toggle="tooltip" style='color:red' class="glyphicon glyphicon-eye-close"></span>
+
+      {% endif %}
+     
+    </td>
+   
+    <td> {{Project.timestamp}}</td>
+    <td>
+
+      <form method="POST" action="{% url 'project_delete' Project.id %}">
+      {% csrf_token %}
+
+      <button class="glyphicon glyphicon-trash"type="submit" value='DELETE'>
+        <!-- <span class="glyphicon glyphicon-trash"></span> -->
+      </button>
+      </form>
+<!--       <a  href="{% url 'project_delete' Project.id %}" ><span style='color:grey' class="glyphicon glyphicon-trash">
+      </span></a>
+ -->
+    </td>
+    </tr>
+    {% endfor %}
+    
+     {% if not  object_list%}
+      <tr class="notrees"><td colspan="6">There are no projects </td></tr>
+     {% endif %}
+    </tbody>
+    <tfoot></tfoot>
+  </table>
+
+
+
+
+  </div>
+
+
+  </div>
+
+
+
+<div class="panel panel-default">
+  <div class="panel-heading"><b>Upload a new project</b></div>
+  <div class="panel-body">
+  <form method="post" class='form' enctype="multipart/form-data">{% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+    <button type="submit" class="btn btn-primary">
+      {% bootstrap_icon "upload" %} Upload
+    </button>
+    <div class='pull-right'>
+    <div id='controls' class='form-inline'>
+<!--     <div class="form-group">
+    <select class="form-control" id="am">
+      <option value='DSS'>DSS</option>
+      <option value='IC50'>IC50</option>
+    </select>
+    </div> -->
+ <!--   
+    <a id='uploadexample' class = 'btn btn-primary' href="/projects/load_example/?am=DSS"> <span class="glyphicon glyphicon-upload"></span> Upload example data</a>
+    <a id='downloadExampleData'class = 'btn btn-primary' href="/static/example/example_data_DSS.txt" download> <span class="glyphicon glyphicon-download"></span> Download example data</a> -->
+  <div class="form-group">
+  <div class="dropup ">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="uploadexample" data-toggle="dropdown">
+   <span class="glyphicon glyphicon-upload"></span> Upload example data</button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+
+      <li class="dropdown-header">Select Input Data Format</li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="/projects/load_example/?am=DSS">DSS</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="/projects/load_example/?am=IC50">IC50</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="/projects/load_example/?am=IC50_smiles">IC50 smiles</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="/projects/load_example/?am=compounds">Compounds Only</a></li>
+     
+    </ul>
+  </div>
+  </div> 
+  <div class="form-group">
+    <div class="dropup">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="downloadExampleData" data-toggle="dropdown">
+    <span class="glyphicon glyphicon-download"></span> Download example data</button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+      <li class="dropdown-header">Select Input Data Format</li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="/static/example/example_data_DSS.txt" download>DSS</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="/static/example/example_data_IC50.txt" download>IC50</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="/static/example/example_IC50_smiles.txt" download>IC50 Smiles</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="/static/example/compounds.txt" download>Compounds Only</a></li>
+      
+    </ul>
+  </div> 
+ </div> 
+    </div>
+      </div>
+    {% endbuttons %}
+  </form>
+  </div>
+  </div>
+  </div>
+  </div>
+{% endblock content %}
+
+
